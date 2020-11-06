@@ -7,7 +7,9 @@ steps:
     image: node:15.0.1-alpine3.10
     commands:
       - yarn install
+
   - name: SAAQ docker
+    group: images
     image: plugins/docker
     settings:
       auto_tag: true
@@ -19,7 +21,9 @@ steps:
         from_secret: saaq_repo
       registry:
         from_secret: saaq_registry
+
   - name: Public docker
+    group: images
     image: plugins/docker
     settings:
       auto_tag: true
