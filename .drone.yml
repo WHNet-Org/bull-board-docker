@@ -36,11 +36,3 @@ steps:
       repo: rphlct/bull-board-docker
     depends_on:
       - build
-
-    build:
-      image: node:15.0.1-alpine3.10
-      commands:
-        - echo goodbye
-      depends_on:
-        - SAAQ_image
-        - public_image
