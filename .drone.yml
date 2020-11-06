@@ -7,7 +7,6 @@ steps:
     image: node:15.0.1-alpine3.10
     commands:
       - yarn install
-
   - name: SAAQ docker
     image: plugins/docker
     settings:
@@ -20,7 +19,6 @@ steps:
         from_secret: saaq_repo
       registry:
         from_secret: saaq_registry
-
   - name: Public docker
     image: plugins/docker
     settings:
