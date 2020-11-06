@@ -2,13 +2,13 @@ kind: pipeline
 type: docker
 name: WonderHammer's UNBELIEVABLE bull-board CI
 
-steps:
-  - name: build
+pipeline:
+  build:
     image: node:15.0.1-alpine3.10
     commands:
       - yarn install
 
-  - name: SAAQ docker
+  SAAQ_image:
     group: images
     image: plugins/docker
     settings:
@@ -22,7 +22,7 @@ steps:
       registry:
         from_secret: saaq_registry
 
-  - name: Public docker
+  public_image:
     group: images
     image: plugins/docker
     settings:
