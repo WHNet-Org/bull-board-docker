@@ -1,0 +1,22 @@
+{
+  "name": "bull-board-docker",
+  "version": "1.0.0-alpha.12",
+  "description": "Dockerized bull-board",
+  "main": "docker-server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WHNet-Org/bull-board-docker.git"
+  },
+  "author": "WHNet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WHNet-Org/bull-board-docker/issues"
+  },
+  "homepage": "https://github.com/WHNet-Org/bull-board-docker#readme",
+  "dependencies": {
+    "bull-board": "^1.0.0-alpha.12",
+    "bullmq": "^1.10.0",
+    "express": "^4.17.1",
+    "express-basic-auth": "^1.2.0"
+  }
+}

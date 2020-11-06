@@ -1,0 +1,32 @@
+kind: pipeline
+type: docker
+name: WonderHammer's UNBELIEVABLE bull-board CI
+
+steps:
+  - name: build
+    image: node:15.0.1-alpine3.10
+    commands:
+      - yarn install
+
+  - name: SAAQ docker
+    image: plugins/docker
+    settings:
+      auto_tag: true
+      username:
+        from_secret: saaq_docker_username
+      password:
+        from_secret: saaq_docker_password
+      repo:
+        from_secret: saaq_repo
+      registry:
+        from_secret: saaq_registry
+
+  - name: Public docker
+    image: plugins/docker
+    settings:
+      auto_tag: true
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: rphlct/bull-board-docker
