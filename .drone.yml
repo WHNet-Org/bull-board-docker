@@ -20,8 +20,8 @@ steps:
     image: node:15.0.1-alpine3.10
     commands:
       - yarn install
-    depends_on:
-      - restore-cache-with-filesystem
+#    depends_on:
+#      - restore-cache-with-filesystem
 
 #  - name: rebuild-cache-with-filesystem
 #    image: meltwater/drone-cache:v1.1
