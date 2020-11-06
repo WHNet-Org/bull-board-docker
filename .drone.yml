@@ -2,13 +2,13 @@ kind: pipeline
 type: docker
 name: WonderHammer's UNBELIEVABLE bull-board CI
 
-pipeline:
-  build:
+steps:
+  - name: build
     image: node:15.0.1-alpine3.10
     commands:
       - yarn install
 
-  SAAQ_image:
+  - name: SAAQ_image
     group: images
     image: plugins/docker
     settings:
@@ -21,8 +21,10 @@ pipeline:
         from_secret: saaq_repo
       registry:
         from_secret: saaq_registry
+    depends_on:
+      - build
 
-  public_image:
+  - name: public_image
     group: images
     image: plugins/docker
     settings:
@@ -32,3 +34,13 @@ pipeline:
       password:
         from_secret: docker_password
       repo: rphlct/bull-board-docker
+    depends_on:
+      - build
+
+    build:
+      image: node:15.0.1-alpine3.10
+      commands:
+        - echo goodbye
+      depends_on:
+        - SAAQ_image
+        - public_image
