@@ -70,3 +70,8 @@ steps:
     tags:
       - latest
       - 1.0.0-alpha.12
+
+volumes:
+  - name: DroneIO-Cache
+    host:
+      path: /var/lib/cache
