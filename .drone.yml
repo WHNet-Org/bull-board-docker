@@ -3,46 +3,45 @@ type: docker
 name: WonderHammer's UNBELIEVABLE bull-board CI
 
 steps:
-#  - name: restore-cache-with-filesystem
-#    image: meltwater/drone-cache:v1.1
-#    settings:
-#      restore: true
-#      backend: "filesystem"
-#      cache_key: '{{ .Repo.Name }}_{{ checksum "yarn.lock" }}_v1'
-#      archive_format: "gzip"
-#      mount:
-#        - 'node_modules'
-#    volumes:
-#      - name: DroneIO-Cache
-#        path: /tmp/cache
+  - name: restore-cache-with-filesystem
+    image: meltwater/drone-cache:v1.1
+    settings:
+      restore: true
+      backend: "filesystem"
+      cache_key: '{{ .Repo.Name }}_{{ checksum "yarn.lock" }}_v1'
+      archive_format: "gzip"
+      mount:
+        - 'node_modules'
+    volumes:
+      - name: DroneIO-Cache
+        path: /tmp/cache
 
   - name: build
     image: node:15.0.1-alpine3.10
     commands:
       - yarn install
-#    depends_on:
-#      - restore-cache-with-filesystem
+    depends_on:
+      - restore-cache-with-filesystem
 
-#  - name: rebuild-cache-with-filesystem
-#    image: meltwater/drone-cache:v1.1
-#    settings:
-#      rebuild: true
-#      backend: "filesystem"
-#      cache_key: '{{ .Repo.Name }}_{{ checksum "yarn.lock" }}_v1'
-#      archive_format: "gzip"
-#      mount:
-#        - 'node_modules'
-#    volumes:
-#      - name: DroneIO-Cache
-#        path: /tmp/cache
-#    depends_on:
-#      - build
+  - name: rebuild-cache-with-filesystem
+    image: meltwater/drone-cache:v1.1
+    settings:
+      rebuild: true
+      backend: "filesystem"
+      cache_key: '{{ .Repo.Name }}_{{ checksum "yarn.lock" }}_v1'
+      archive_format: "gzip"
+      mount:
+        - 'node_modules'
+    volumes:
+      - name: DroneIO-Cache
+        path: /tmp/cache
+    depends_on:
+      - build
 
   - name: SAAQ_image
     group: images
     image: plugins/docker
     settings:
-      auto_tag: true
       username:
         from_secret: saaq_docker_username
       password:
@@ -53,12 +52,14 @@ steps:
         from_secret: saaq_registry
     depends_on:
       - build
+    tags:
+      - latest
+      - 1.0.0-alpha.12
 
   - name: public_image
     group: images
     image: plugins/docker
     settings:
-      auto_tag: true
       username:
         from_secret: docker_username
       password:
@@ -66,3 +67,6 @@ steps:
       repo: rphlct/bull-board
     depends_on:
       - build
+    tags:
+      - latest
+      - 1.0.0-alpha.12
