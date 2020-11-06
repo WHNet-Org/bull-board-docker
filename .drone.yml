@@ -3,10 +3,40 @@ type: docker
 name: WonderHammer's UNBELIEVABLE bull-board CI
 
 steps:
+  - name: restore-cache-with-filesystem
+    image: meltwater/drone-cache:v1.1
+    settings:
+      restore: true
+      backend: "filesystem"
+      cache_key: '{{ .Repo.Name }}_{{ checksum "yarn.lock" }}_v1'
+      archive_format: "gzip"
+      mount:
+        - 'node_modules'
+    volumes:
+      - name: DroneIO-Cache
+        path: /tmp/cache
+
   - name: build
     image: node:15.0.1-alpine3.10
     commands:
       - yarn install
+    depends_on:
+      - restore-cache-with-filesystem
+
+  - name: rebuild-cache-with-filesystem
+    image: meltwater/drone-cache:v1.1
+    settings:
+      rebuild: true
+      backend: "filesystem"
+      cache_key: '{{ .Repo.Name }}_{{ checksum "yarn.lock" }}_v1'
+      archive_format: "gzip"
+      mount:
+        - 'node_modules'
+    volumes:
+      - name: DroneIO-Cache
+        path: /tmp/cache
+    depends_on:
+      - build
 
   - name: SAAQ_image
     group: images
